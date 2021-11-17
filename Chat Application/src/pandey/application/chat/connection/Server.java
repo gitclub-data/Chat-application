@@ -1,6 +1,8 @@
 package pandey.application.chat.connection;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,8 +19,18 @@ public class Server {
 		System.out.println("Connected");
 		
 		//make a output stream
+		BufferedReader inp=new BufferedReader(new InputStreamReader(client.getInputStream()));
+		BufferedReader keyinp=new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter out=new PrintWriter(client.getOutputStream(),true);
-		out.println("hello");
+		
+		while(true) {
+			String clientsays=inp.readLine();
+			System.out.println("Client Says: "+clientsays);
+			System.out.print(">>");
+			String cmd=keyinp.readLine();
+			if(cmd=="quit") break;
+			out.println(cmd);
+		}
 		
 		System.out.print("Closing Connection");
 		client.close();
