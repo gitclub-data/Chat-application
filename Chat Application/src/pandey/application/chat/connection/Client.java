@@ -16,24 +16,25 @@ public class Client {
 		// set connection to server
 		Socket socket= new Socket(ip_address,port);
 		
-		// make a input streamreader to get input from skocket
-		BufferedReader inp=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		// make a input streamreader to get input from skocket	
+		ServerHandler serverhndle=new ServerHandler(socket);
+		
 		BufferedReader keyinp=new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader keyid=new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter out=new PrintWriter(socket.getOutputStream(),true);
 		
+		new Thread(serverhndle).start();
+		
 		while(true) {
+			System.out.println("Input the id");
+			String identity=keyid.readLine();
 			System.out.print(">>");
 			String cmd=keyinp.readLine();
 			if(cmd=="quit") break;
-			
-			out.println(cmd);
-			
-			String serverResponse=inp.readLine();
-			System.out.println("Server says:"+serverResponse);
+			out.println(identity+"c@d!"+cmd);
 		}	
 		System.out.print("Closing Connection");
 		//closing the connection
-		inp.close();
 		socket.close();		
 	}
 }
